@@ -47,3 +47,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Ignore large dataset file for 02-EDA-AirPollution
+code/hourly_44201_2014.csv

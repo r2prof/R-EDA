@@ -50,3 +50,4 @@ rsconnect/
 
 # Ignore large size files
 /data/test.txt
+/data/hourly_44201_2014.csv

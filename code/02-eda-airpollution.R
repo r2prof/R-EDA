@@ -1,3 +1,6 @@
 library(readr)
 ozone <- read_csv("data/hourly_44201_2014.csv",col_types = "ccccinnccccccncnncccccc")
 head(ozone)
+names(ozone) <- make.names(names(ozone))
+nrow(ozone)
+head(ozone)

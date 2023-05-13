@@ -148,3 +148,77 @@ ranking <- group_by(ozone, State.Name, County.Name) %>%
   as.data.frame %>%
   arrange(desc(ozone))
 head(ranking, 10)
+tail(ranking, 10)
+#
+# Let’s take a look first two of the higest level counties, Clear Creek, Colorado, and Mariposa County, California. 
+#First let’s see how many observations there are for these county in the dataset.
+#
+filter(ozone, State.Name == "Colorado" & County.Name == "Clear Creek") %>% nrow
+filter(ozone, State.Name == "California" & County.Name == "Mariposa") %>% nrow
+#
+# Always be checking. Does that number of observations sound right? Well, there’s 24
+# hours in a day and 365 days per, which gives us 8760, which is close to that number
+# of observations. 
+#
+# Sometimes the counties use alternate methods of measurement during the year so there 
+# may be “extra” measurements. We can take a look at how ozone varies through the year 
+# in this county by looking at monthly averages. 
+# 
+# First we’ll need to convert the date variable into a Date class.
+ozone <- mutate(ozone, Date.Local = as.Date(Date.Local))
+#
+# Then we will split the data by month to look at the average hourly levels.
+filter(ozone, State.Name == "California" & County.Name == "Mariposa") %>%
+  mutate(month = factor(months(Date.Local), levels = month.name)) %>%
+  group_by(month) %>%
+  summarize(ozone = mean(Sample.Measurement))
+#
+filter(ozone, State.Name == "Colorado" & County.Name == "Clear Creek") %>%
+  mutate(month = factor(months(Date.Local), levels = month.name)) %>%
+  group_by(month) %>%
+  summarize(ozone = mean(Sample.Measurement))
+#
+# Now let’s take a look at one of the lowest level counties, Caddo County, Oklahoma.
+filter(ozone, State.Name == "Oklahoma" & County.Name == "Caddo") %>% nrow
+#
+filter(ozone, State.Name == "Alaska" & County.Name == "Fairbanks North Star") %>% nrow
+#
+filter(ozone, State.Name == "Puerto Rico" & County.Name == "Bayamon") %>% nrow
+filter(ozone, State.Name == "Puerto Rico" & County.Name == "Catano") %>% nrow
+#
+# Here we see that there are perhaps fewer observations than we would expect for a
+# monitor that was measuring 24 hours a day all year. We can check the data to see if
+# anything funny is going.
+#
+filter(ozone, State.Name == "Oklahoma" & County.Name == "Caddo") %>%
+  mutate(month = factor(months(Date.Local), levels = month.name)) %>%
+  group_by(month) %>%
+  summarize(ozone = mean(Sample.Measurement))
+#
+filter(ozone, State.Name == "Alaska" & County.Name == "Fairbanks North Star") %>%
+  mutate(month = factor(months(Date.Local), levels = month.name)) %>%
+  group_by(month) %>%
+  summarize(ozone = mean(Sample.Measurement))
+#
+filter(ozone, State.Name == "Puerto Rico" & County.Name == "Catano") %>%
+  mutate(month = factor(months(Date.Local), levels = month.name)) %>%
+  group_by(month) %>%
+  summarize(ozone = mean(Sample.Measurement))
+#
+filter(ozone, State.Name == "Puerto Rico" & County.Name == "Bayamon") %>%
+  mutate(month = factor(months(Date.Local), levels = month.name)) %>%
+  group_by(month) %>%
+  summarize(ozone = mean(Sample.Measurement))
+#
+# Here we can see that the levels of ozone are much lower in this county and that also few
+# months are missing. Given the seasonal nature of ozone, it’s possible that the levels of 
+# ozone are so low in those months that it’s not even worth measuring. In fact some of the 
+# monthly averages are below the typical method # detection limit of the measurement technology, 
+# meaning that those values are highly uncertain and likely not distinguishable from zero.
+#
+# 5.9 Challenge your solution
+# The easy solution is nice because it is, well, easy, but you should never allow those results
+# to hold the day. You should always be thinking of ways to challenge the results, especially
+# if those results comport with your prior expectation.
+# Now, the easy answer seemed to work okay in that it gave us a listing of counties that had
+# the highest average levels of ozone for 2014. However, the analysis raised some issues.

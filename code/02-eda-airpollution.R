@@ -46,6 +46,7 @@ head(ozone)
 # the sense that even with a very large dataset, running str() shouldn’t take too long.
 str(ozone)
 #
+
 # 5. Look at the top and bottom of your data
 # You can peek at the top and bottom of the data with the head() and tail() functions.
 # First six rows with 6th, 7th and 10th column
